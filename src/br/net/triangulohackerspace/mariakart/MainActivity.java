@@ -161,12 +161,12 @@ public class MainActivity extends Activity implements SensorEventListener {
 
 	private void calculaVelocidade() {
 		
-		if(inclinacaoVolante.intValue() >= 1 && inclinacaoVolante.intValue() <= 9){ //Vira para a Direita
-			speedA = converteAceleracao();
-			speedB = getVelocidadeNaCurva();
-		} else if(inclinacaoVolante.intValue() <= -1 && inclinacaoVolante.intValue() >= -9){ //Vira para a Esquerda
+		if(inclinacaoVolante.intValue() >= 1 && inclinacaoVolante.intValue() <= 9){ //Vira para a Esquerda
 			speedA = getVelocidadeNaCurva();
 			speedB = converteAceleracao();
+		} else if(inclinacaoVolante.intValue() <= -1 && inclinacaoVolante.intValue() >= -9){ //Vira para a Direita
+			speedA = converteAceleracao();
+			speedB = getVelocidadeNaCurva();
 		} else if (inclinacaoVolante.intValue() == 0){ //Reto
 		 speedA = converteAceleracao();
 		 speedB = converteAceleracao();
