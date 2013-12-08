@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent" >
+	    android:layout_height="fill_parent"
+	    android:clickable="true" >
 	
 	    <TextView 
 		android:id="@+id/xcoor"
@@ -9,26 +10,8 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" />
 
-	    <TextView
-	        android:id="@+id/ycoor"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignBottom="@+id/zcoor"
-	        android:layout_alignParentLeft="true"
-	        android:layout_marginBottom="19dp"
-	        android:text="Y Coordinate: " />
-	    
-	    <TextView
-	        android:id="@+id/zcoor"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_alignParentTop="true"
-	        android:layout_marginTop="40dp"
-	        android:text="Z Coordinate: " />
-
 	    <ToggleButton
-	        android:id="@+id/toggleButton1"
+	        android:id="@+id/toggleRE"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentBottom="true"
@@ -37,7 +20,8 @@
 	        android:layout_marginRight="19dp"
 	        android:text="ToggleButton"
 	        android:textOff="@string/Re"
-	        android:textOn="@string/Re" />
+	        android:textOn="@string/Re" 
+	        android:onClick="mudaDirecao"/>
 
 	    <SeekBar
 	        android:id="@+id/seekBar1"
@@ -51,11 +35,59 @@
 	        android:id="@+id/textAceleracao"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_alignRight="@+id/toggleButton1"
-	        android:layout_below="@+id/ycoor"
-	        android:layout_marginRight="35dp"
-	        android:layout_marginTop="24dp"
+	        android:layout_alignBottom="@+id/seekBar1"
+	        android:layout_marginBottom="31dp"
+	        android:layout_alignLeft="@+id/seekBar1"
+	        android:layout_alignRight="@+id/seekBar1"
+	        android:gravity="center"
 	        android:text="TextView" />
+
+	    <TextView
+	        android:id="@+id/ycoor"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/zcoor"
+	        android:text="Y Coordinate: " />
+
+	    <TextView
+	        android:id="@+id/zcoor"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/xcoor"
+	        android:text="Z Coordinate: " />
+
+	    <ProgressBar
+	        android:id="@+id/speedABar"
+	        style="?android:attr/progressBarStyleHorizontal"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignBottom="@+id/xcoor"
+	        android:layout_alignLeft="@+id/seekBar1"
+	        android:layout_alignRight="@+id/toggleRE"
+	        android:max="255"
+	        android:scrollbarStyle="insideOverlay" />
+
+	    <ProgressBar
+	        android:id="@+id/speedBBar"
+	        style="?android:attr/progressBarStyleHorizontal"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_above="@+id/ycoor"
+	        android:layout_alignLeft="@+id/speedABar"
+	        android:layout_alignRight="@+id/speedABar"
+	        android:max="255" />
+
+	    <TextView
+	        android:id="@+id/textOutPut"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignBottom="@+id/toggleRE"
+	        android:layout_alignParentLeft="true"
+	        android:layout_marginLeft="15dp"
+	        android:text="Text Output"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 	</RelativeLayout>
 		

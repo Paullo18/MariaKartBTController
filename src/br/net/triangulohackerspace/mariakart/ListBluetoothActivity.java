@@ -71,7 +71,7 @@ public class ListBluetoothActivity extends ListActivity {
                 i++;
             }
         } else {
-        	Toast.makeText(this, "Não existe dispositivos pareados", Toast.LENGTH_SHORT).show();
+        	Toast.makeText(this, "Nao existe dispositivos pareados", Toast.LENGTH_SHORT).show();
         	finish();
         }
         

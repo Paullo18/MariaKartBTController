@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,8 +46,11 @@ public class MainActivity extends Activity implements SensorEventListener {
 	TextView xCoor; 
 	TextView yCoor; 
 	TextView zCoor; 
-	TextView aceleracao; 
+	TextView aceleracao;
+	TextView textOutput;
 	SeekBar barraAceleracao;
+	ProgressBar speedABar;
+	ProgressBar speedBBar;
 	
 	
 	//Bluetooth
@@ -62,6 +66,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 	  
 	// SPP UUID service 
 	private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
+	private static final long INTERVAL_UPDATE = 300; //Tempo de atualizacao do bluetooth
 	  
 	// MAC-address of Bluetooth module (you must edit this line)
 	private String address;
@@ -81,6 +87,9 @@ public class MainActivity extends Activity implements SensorEventListener {
 		zCoor=(TextView)findViewById(R.id.zcoor); // create Z axis object
 		aceleracao=(TextView)findViewById(R.id.textAceleracao);
 		barraAceleracao=(SeekBar)findViewById(R.id.seekBar1);
+		speedABar=(ProgressBar)findViewById(R.id.speedABar);
+		speedBBar=(ProgressBar)findViewById(R.id.speedBBar);
+		textOutput=(TextView)findViewById(R.id.textOutPut);
 
 		
 		sensorManager=(SensorManager)getSystemService(SENSOR_SERVICE);
@@ -98,6 +107,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 		
 		btAdapter = BluetoothAdapter.getDefaultAdapter();
 	    checkBTState();
+	    
+	    textOutput.setText("Bluetooth Desconectado!");
 
 	}
 
@@ -131,8 +142,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 				
 				calculaVelocidade();
 				
-				xCoor.setText("speedA: "+speedA);
-				zCoor.setText("speedB: "+speedB);
+				xCoor.setText("Speed A:"+speedA);
+				zCoor.setText("Speed B:"+speedB);
 			}
 		}
 	}
@@ -220,7 +231,11 @@ public class MainActivity extends Activity implements SensorEventListener {
 	    	scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
 	    	  public void run() {
 	    	    processaInformacoes();
+	    	    speedABar.setProgress(speedA);
+	    	    speedBBar.setProgress(speedB);
 	    	  }
+
+			
 
 			private void processaInformacoes() {
 				if(speedA > 0 || speedB > 0){
@@ -228,22 +243,23 @@ public class MainActivity extends Activity implements SensorEventListener {
 					String velA = ("000"+Integer.valueOf(speedA).toString());
 					String velB = ("000"+Integer.valueOf(speedB).toString());
 					
-					sendData("b:"+velA.substring(velA.length()-3)+velB.substring(velB.length()-3)+":");
-					
+					sendData("b"+velA.substring(velA.length()-3)+velB.substring(velB.length()-3)+":");
 				} else 
 					if(!parado){
 						sendData("h:"); //Freia
 						parado = true;
 					}
 				
-				
 			}
-	    	}, 0, 500, TimeUnit.MILLISECONDS);
+	    	}, 0, INTERVAL_UPDATE, TimeUnit.MILLISECONDS);
 	    }
 	    
 	 }
 	
 	private void conectarBTDevice() {
+		
+		if(btSocket != null && btSocket.isConnected())
+			return;
 		
 		Log.d(TAG_BT, "Conectando a: "+address);
 		// Set up a pointer to the remote node using it's address.
@@ -270,13 +286,14 @@ public class MainActivity extends Activity implements SensorEventListener {
 			btSocket.connect();
 			Log.d(TAG_BT, "...Connection ok...");
 			Toast.makeText(this, "Bluetooth Conectado", Toast.LENGTH_SHORT).show();
-			
+			textOutput.setText("Bluetooth Conectado!");
 		} catch (IOException e) {
+			textOutput.setText("Bluetooth Desconectado!");
 			try {
 				btSocket.close();
-				Toast.makeText(this, "Bluetooth N��O Conectado", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "Bluetooth NAO Conectado", Toast.LENGTH_LONG).show();
 				
-				Log.d(TAG_BT, "N��o houve conexao com: "+address);
+				Log.d(TAG_BT, "Noo houve conexao com: "+address);
 			} catch (IOException e2) {
 				errorExit("Fatal Error", "In onResume() and unable to close socket during connection failure" + e2.getMessage() + ".");
 			}
@@ -355,16 +372,16 @@ public class MainActivity extends Activity implements SensorEventListener {
 	  
 	    Log.d(TAG_BT, "...Send data: " + message + "...");
 	  
-//	    try {
-//	      outStream.write(msgBuffer);
-//	    } catch (IOException e) {
-//	      String msg = "In onResume() and an exception occurred during write: " + e.getMessage();
-//	      if (address.equals("00:00:00:00:00:00")) 
-//	        msg = msg + ".\n\nUpdate your server address from 00:00:00:00:00:00 to the correct address on line 35 in the java code";
-//	        msg = msg +  ".\n\nCheck that the SPP UUID: " + MY_UUID.toString() + " exists on server.\n\n";
-//	        
-//	        errorExit("Fatal Error", msg);       
-//	    }
+	    try {
+	      outStream.write(msgBuffer);
+	    } catch (IOException e) {
+	      String msg = "In onResume() and an exception occurred during write: " + e.getMessage();
+	      if (address.equals("00:00:00:00:00:00")) 
+	        msg = msg + ".\n\nUpdate your server address from 00:00:00:00:00:00 to the correct address on line 35 in the java code";
+	        msg = msg +  ".\n\nCheck that the SPP UUID: " + MY_UUID.toString() + " exists on server.\n\n";
+	        
+	        errorExit("Fatal Error", msg);       
+	    }
 	  }
 	
 	@Override
