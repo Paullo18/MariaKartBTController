@@ -67,7 +67,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 	// SPP UUID service 
 	private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-	private static final long INTERVAL_UPDATE = 300; //Tempo de atualizacao do bluetooth
+	private static final long INTERVAL_UPDATE = 50; //Tempo de atualizacao do bluetooth
 	  
 	// MAC-address of Bluetooth module (you must edit this line)
 	private String address;
@@ -138,7 +138,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 				//zCoor.setText("Z: "+z.intValue());
 				yCoor.setText("Y: "+inclinacaoVolante);
 				
-				aceleracao.setText("Aceleracao: "+ aceleracaoPorcentagem+ " %");
+				aceleracao.setText(aceleracaoPorcentagem+ " %");
 				
 				calculaVelocidade();
 				
@@ -180,15 +180,13 @@ public class MainActivity extends Activity implements SensorEventListener {
 
 	private int getVelocidadeNaCurva() {
 		int vel = ((converteAceleracao() * (100-getPorcentagemInclinacao()))/100);
-		if(vel < 0)
-			vel = 0;
+		if(vel < (converteAceleracao() * 0.50))
+			vel = (int) (converteAceleracao() * 0.30);
 		return vel;
 	}
 
 	private int getPorcentagemInclinacao() {
 		
-		//9 = 100
-		//incV = X
 		
 		// X = (incl*100)/9
 		//Log.d(TAG_SPEED, "Inclinacao Volante " + inclinacaoVolante);
@@ -204,7 +202,12 @@ public class MainActivity extends Activity implements SensorEventListener {
 	}
 
 	private int converteAceleracao() {
-		return ((aceleracaoPorcentagem * 255) / 100);
+		if(aceleracaoPorcentagem > 0){
+			return map(aceleracaoPorcentagem, 0, 100, 70, 255);			
+		} else {
+			return 0;
+		}
+		// ((aceleracaoPorcentagem * 255) / 100);
 	}
 	
 	public void mudaDirecao(View view){
@@ -415,7 +418,7 @@ public class MainActivity extends Activity implements SensorEventListener {
             	 String nome = data.getStringExtra("BLUETOOTH_MAC");
             	 Log.d(TAG_BT, "Selecionado de volta: "+ nome);
             	 if(nome != null){
-            		 if(nome != null && !nome.equals("N��o h�� nenhum conectado")){
+            		 if(nome != null && !nome.equals("Nao ha nenhum conectado")){
 
             			 Log.d(TAG_BT, "Buscando Dispositivos Bluetooth Pareados");
 
@@ -437,6 +440,11 @@ public class MainActivity extends Activity implements SensorEventListener {
              }
          }
      }
+	
+	int map(int x, int in_min, int in_max, int out_min, int out_max)
+	{
+	  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+	}
 	
 }
 

@@ -10,19 +10,6 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" />
 
-	    <ToggleButton
-	        android:id="@+id/toggleRE"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentBottom="true"
-	        android:layout_alignParentRight="true"
-	        android:layout_marginBottom="14dp"
-	        android:layout_marginRight="19dp"
-	        android:text="ToggleButton"
-	        android:textOff="@string/Re"
-	        android:textOn="@string/Re" 
-	        android:onClick="mudaDirecao"/>
-
 	    <SeekBar
 	        android:id="@+id/seekBar1"
 	        android:layout_width="200dp"
@@ -36,11 +23,12 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignBottom="@+id/seekBar1"
-	        android:layout_marginBottom="31dp"
 	        android:layout_alignLeft="@+id/seekBar1"
 	        android:layout_alignRight="@+id/seekBar1"
+	        android:layout_marginBottom="31dp"
 	        android:gravity="center"
-	        android:text="TextView" />
+	        android:text="TextView"
+	        android:textSize="30sp" />
 
 	    <TextView
 	        android:id="@+id/ycoor"
@@ -88,6 +76,21 @@
 	        android:layout_marginLeft="15dp"
 	        android:text="Text Output"
 	        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	    <ToggleButton
+	        android:id="@+id/toggleRE"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@+id/seekBar1"
+	        android:layout_below="@+id/seekBar1"
+	        android:layout_marginLeft="34dp"
+	        android:layout_marginTop="14dp"
+	        android:height="80dp"
+	        android:onClick="mudaDirecao"
+	        android:text="ToggleButton"
+	        android:textOff="@string/Re"
+	        android:textOn="@string/Re"
+	        android:width="120dp" />
 
 	</RelativeLayout>
 		
