@@ -414,7 +414,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 		 Log.i(TAG_BT, "onActivityResult");
          if (requestCode == LIST_BLUETOOTH) {
         	 Log.i(TAG_BT, "LIST_BLUETOOTH");
-             if (resultCode == RESULT_OK) {
+             if (resultCode == RESULT_OK && data != null) {
             	 String nome = data.getStringExtra("BLUETOOTH_MAC");
             	 Log.d(TAG_BT, "Selecionado de volta: "+ nome);
             	 if(nome != null){
